@@ -271,7 +271,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 /* Surah */
 .surah {
   margin-bottom: 32px;
-  scroll-margin-top: 20px;
+  scroll-margin-top: 84px;
 }
 .surah-header {
   display: flex;
@@ -389,6 +389,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 @media (max-width: 768px) {
   #sidebar-toggle { display: flex; }
   #main-content { margin-right: 0; padding: 56px 16px 16px; }
+  #selection-bar { padding-right: 60px; }
   .surah-text { font-size: 18px; padding: 12px; line-height: 2.1; }
   .surah-name { font-size: 28px; }
   #page-title h1 { font-size: 22px; }
@@ -566,8 +567,8 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
     <h1>القرآن الكريم</h1>
   </div>
   <div id="selection-bar">
-    <div class="sel-badge">الكلمات: <span id="words2">حدد نصاً</span></div>
-    <div class="sel-badge">الحروف: <span id="lettres2">—</span></div>
+    <div class="sel-badge">كلمات: <span id="words2">حدد نصاً</span></div>
+    <div class="sel-badge">حروف: <span id="lettres2">—</span></div>
   </div>
   <div id="quran-content" onmouseup="onSelect()" ontouchend="onSelect()" onkeyup="onSelect()">
 <div class="surah" id="surah-1"><div class="surah-header"><span class="surah-num">1</span><span class="surah-name">الفاتحة</span></div><div class="surah-text">بسم الله الرحمن الرحيم﴿1﴾ الحمد لله رب العالمين﴿2﴾ الرحمن الرحيم﴿3﴾ مالك يوم الدين﴿4﴾ إياك نعبد وإياك نستعين﴿5﴾ اهدنا الصراط المستقيم﴿6﴾ صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين﴿7﴾ </div></div>
