@@ -84,6 +84,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   border: 1px solid var(--border-soft);
   border-radius: 6px;
   color: var(--green-deep);
+  caret-color: var(--green-deep);
   font-family: "Noto Kufi Arabic", serif;
   font-size: 15px;
   direction: rtl;
@@ -143,8 +144,31 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   min-height: 16px;
 }
 
-/* Search results */
-#search-results-wrap { display: none; padding: 0 16px 12px; }
+/* Search results (collapsible widget, same look as the surah index) */
+#results-collapsible { display: none; }
+#results-collapsible.ui-collapsible { margin: 0; }
+#results-collapsible .ui-collapsible-heading-toggle {
+  display: block;
+  padding: 10px 16px;
+  background: var(--bg-sidebar-header);
+  color: var(--green-deep);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  text-align: right;
+  border: none;
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+  border-radius: 0;
+}
+#results-collapsible .ui-collapsible-content {
+  padding: 0;
+  border: none;
+  background: var(--bg-sidebar);
+  max-height: 320px;
+  overflow-y: auto;
+}
+#search-results-wrap { padding: 0 16px 12px; }
 #search-results {
   width: 100%;
   border-collapse: collapse;
@@ -260,15 +284,17 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   direction: rtl;
 }
 .surah-num {
-  background: var(--gold);
-  color: var(--green-deep);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--cream);
+  min-width: 32px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   flex-shrink: 0;
   font-family: Arial, sans-serif;
@@ -312,6 +338,8 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 /* Highlight */
 .highlight { background: #ffe066; border-radius: 3px; padding: 0 2px; }
 .highlight-current { background: #ff9900; border-radius: 3px; padding: 0 2px; }
+/* Aya reached from a search result - stays highlighted until another result is opened */
+.aya-active { background: #ff9900; border-radius: 3px; padding: 0 2px; }
 
 /* Selection info bar */
 #selection-bar {
@@ -331,9 +359,10 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 .sel-badge {
   background: var(--green-medium);
   color: var(--cream);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 14px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 600;
 }
 .sel-badge span { color: var(--gold); margin-right: 4px; }
 
@@ -522,8 +551,11 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
     <input type="text" id="search-box" placeholder="ابحث في القرآن الكريم..." onkeydown="if(event.key==='Enter') doSearch(this.value)">
     <button id="search-btn" onclick="doSearch(document.getElementById('search-box').value)">ابحث</button>
     <div id="search-count"></div>
-    <div id="search-results-wrap">
-      <table id="search-results"><tbody></tbody></table>
+    <div id="results-collapsible" data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+      <h4>نتائج البحث</h4>
+      <div id="search-results-wrap">
+        <table id="search-results"><tbody></tbody></table>
+      </div>
     </div>
   </div>
 </div>
@@ -823,14 +855,23 @@ function doSearch(q) {
   renderSearchResults(q);
 }
 
-// Search results list (sidebar): one row per matching aya, clickable to jump to it
+// Search results list (sidebar): one row per matching aya, clickable to jump to it,
+// shown inside a collapsible widget like the surah index
+var resultsCollapsibleReady = false;
+function setResultsCollapsibleVisible(visible) {
+  var box = document.getElementById('results-collapsible');
+  box.style.display = visible ? 'block' : 'none';
+}
+function expandResultsCollapsible() {
+  if (resultsCollapsibleReady) $('#results-collapsible').collapsible('expand');
+}
+
 function renderSearchResults(q) {
-  var wrap = document.getElementById('search-results-wrap');
   var tbody = document.querySelector('#search-results tbody');
   tbody.innerHTML = '';
 
   if (!q) {
-    wrap.style.display = 'none';
+    setResultsCollapsibleVisible(false);
     return;
   }
 
@@ -848,7 +889,7 @@ function renderSearchResults(q) {
   });
 
   if (results.length === 0) {
-    wrap.style.display = 'none';
+    setResultsCollapsibleVisible(false);
     return;
   }
 
@@ -872,16 +913,20 @@ function renderSearchResults(q) {
     tbody.appendChild(tr);
   });
 
-  wrap.style.display = 'block';
+  setResultsCollapsibleVisible(true);
+  expandResultsCollapsible();
 }
 
-// Jump to a specific aya from the search results list
+// Jump to a specific aya from the search results list - highlight stays
+// until another aya is selected (not auto-hidden after a timeout)
+var lastActiveAya = null;
 function goToAya(id) {
   var el = document.getElementById(id);
   if (!el) return;
+  if (lastActiveAya) lastActiveAya.classList.remove('aya-active');
   el.scrollIntoView({behavior: 'smooth', block: 'center'});
-  el.classList.add('highlight-current');
-  setTimeout(function() { el.classList.remove('highlight-current'); }, 1500);
+  el.classList.add('aya-active');
+  lastActiveAya = el;
   closeSidebar();
 }
 
@@ -922,6 +967,8 @@ function closeSidebar() {
 ensureSidebarPanel();
 $('#surah-collapsible').collapsible();
 $('#index-container').listview();
+$('#results-collapsible').collapsible();
+resultsCollapsibleReady = true;
 // jQuery Mobile hides <html> for up to 5s to avoid a flash of unenhanced
 // content while it waits for a "page" to show - we never use its page
 // system, so remove that guard immediately instead of waiting.
