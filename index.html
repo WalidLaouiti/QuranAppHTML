@@ -231,14 +231,63 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 }
 .sel-badge span { color: white; margin-right: 4px; }
 
+/* Sidebar toggle (mobile) */
+#sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  background: #1e3a2f;
+  color: #c9a84c;
+  border: none;
+  border-radius: 8px;
+  font-size: 22px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
 @media (max-width: 768px) {
-  #sidebar { width: 220px; min-width: 220px; }
-  #main-content { margin-right: 220px; padding: 12px 16px; }
+  #sidebar-toggle { display: flex; }
+  #sidebar {
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+    width: 260px;
+    min-width: 260px;
+    z-index: 150;
+  }
+  #sidebar.open { transform: translateX(0); }
+  #sidebar.open ~ #sidebar-overlay { display: block; }
+  #main-content { margin-right: 0; padding: 56px 16px 16px; }
+  .surah-text { font-size: 18px; padding: 12px; line-height: 2.1; }
+  .surah-name { font-size: 28px; }
+  #page-title h1 { font-size: 22px; }
+  #selection-bar { gap: 8px; }
+}
+
+@media (max-width: 480px) {
+  .surah-text { font-size: 16px; }
+  .stat-value { font-size: 22px; }
 }
 </style>
 </head>
 <body>
 <div id="app">
+
+<!-- Mobile sidebar toggle -->
+<button id="sidebar-toggle" onclick="toggleSidebar()" aria-label="فتح/إغلاق القائمة">☰</button>
 
 <!-- Sidebar -->
 <div id="sidebar">
@@ -378,6 +427,8 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 
   </div>
 </div>
+
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- Main content -->
 <div id="main-content">
@@ -609,7 +660,16 @@ function scrollToSurah(n) {
     var links = document.querySelectorAll('.idx-item');
     if (links[n-1]) links[n-1].classList.add('active');
   }
+  closeSidebar();
   return false;
+}
+
+// Mobile sidebar toggle
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
 }
 
 // Intersection observer to highlight active surah in index
