@@ -179,6 +179,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   font-weight: 700;
   font-size: 15px;
   text-decoration: none;
+  text-align: right;
   border: none;
   border-bottom: 1px solid var(--border-soft);
   border-radius: 0;
@@ -190,20 +191,33 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   max-height: 320px;
   overflow-y: auto;
 }
+/* Thin separator line before the عرض الآيات group */
+#surah-collapsible + .display-group {
+  border-top: 1px solid var(--border-soft);
+}
 
-/* Index (surah list, inside jQuery Mobile collapsible) */
-#index-container {
+/* Index (surah list, inside jQuery Mobile collapsible listview widget) */
+#index-container.ui-listview {
+  margin: 0;
   padding: 4px 0;
 }
 
 .idx-item {
   display: block;
   padding: 7px 16px;
+  background: none;
+  border: none;
+  border-right: 3px solid transparent;
   color: var(--green-deep);
   text-decoration: none;
+  text-align: right;
   font-size: 14px;
+  font-weight: normal;
+  line-height: normal;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
   transition: all 0.15s;
-  border-right: 3px solid transparent;
 }
 .idx-item:hover { background: var(--bg-sidebar-header); color: var(--green-medium); border-right-color: var(--gold); }
 .idx-item.active { background: var(--border-soft); color: var(--green-deep); border-right-color: var(--gold); font-weight: bold; }
@@ -368,124 +382,124 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
     <h2>القرآن الكريم</h2>
   </div>
 
-  <div id="surah-collapsible" data-role="collapsible" data-collapsed="true">
+  <div id="surah-collapsible" data-role="collapsible" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
     <h3>فهرس السور</h3>
-    <div id="index-container">
-<a href="#surah-1" class="idx-item" onclick="scrollToSurah(1)">1. الفاتحة</a>
-<a href="#surah-2" class="idx-item" onclick="scrollToSurah(2)">2. البقرة</a>
-<a href="#surah-3" class="idx-item" onclick="scrollToSurah(3)">3. آل عمران</a>
-<a href="#surah-4" class="idx-item" onclick="scrollToSurah(4)">4. النساء</a>
-<a href="#surah-5" class="idx-item" onclick="scrollToSurah(5)">5. المائدة</a>
-<a href="#surah-6" class="idx-item" onclick="scrollToSurah(6)">6. الأنعام</a>
-<a href="#surah-7" class="idx-item" onclick="scrollToSurah(7)">7. الأعراف</a>
-<a href="#surah-8" class="idx-item" onclick="scrollToSurah(8)">8. الأنفال</a>
-<a href="#surah-9" class="idx-item" onclick="scrollToSurah(9)">9. التوبة</a>
-<a href="#surah-10" class="idx-item" onclick="scrollToSurah(10)">10. يونس</a>
-<a href="#surah-11" class="idx-item" onclick="scrollToSurah(11)">11. هود</a>
-<a href="#surah-12" class="idx-item" onclick="scrollToSurah(12)">12. يوسف</a>
-<a href="#surah-13" class="idx-item" onclick="scrollToSurah(13)">13. الرعد</a>
-<a href="#surah-14" class="idx-item" onclick="scrollToSurah(14)">14. إبراهيم</a>
-<a href="#surah-15" class="idx-item" onclick="scrollToSurah(15)">15. الحجر</a>
-<a href="#surah-16" class="idx-item" onclick="scrollToSurah(16)">16. النحل</a>
-<a href="#surah-17" class="idx-item" onclick="scrollToSurah(17)">17. الإسراء</a>
-<a href="#surah-18" class="idx-item" onclick="scrollToSurah(18)">18. الكهف</a>
-<a href="#surah-19" class="idx-item" onclick="scrollToSurah(19)">19. مريم</a>
-<a href="#surah-20" class="idx-item" onclick="scrollToSurah(20)">20. طه</a>
-<a href="#surah-21" class="idx-item" onclick="scrollToSurah(21)">21. الأنبياء</a>
-<a href="#surah-22" class="idx-item" onclick="scrollToSurah(22)">22. الحج</a>
-<a href="#surah-23" class="idx-item" onclick="scrollToSurah(23)">23. المؤمنون</a>
-<a href="#surah-24" class="idx-item" onclick="scrollToSurah(24)">24. النور</a>
-<a href="#surah-25" class="idx-item" onclick="scrollToSurah(25)">25. الفرقان</a>
-<a href="#surah-26" class="idx-item" onclick="scrollToSurah(26)">26. الشعراء</a>
-<a href="#surah-27" class="idx-item" onclick="scrollToSurah(27)">27. النمل</a>
-<a href="#surah-28" class="idx-item" onclick="scrollToSurah(28)">28. القصص</a>
-<a href="#surah-29" class="idx-item" onclick="scrollToSurah(29)">29. العنكبوت</a>
-<a href="#surah-30" class="idx-item" onclick="scrollToSurah(30)">30. الروم</a>
-<a href="#surah-31" class="idx-item" onclick="scrollToSurah(31)">31. لقمان</a>
-<a href="#surah-32" class="idx-item" onclick="scrollToSurah(32)">32. السجدة</a>
-<a href="#surah-33" class="idx-item" onclick="scrollToSurah(33)">33. الأحزاب</a>
-<a href="#surah-34" class="idx-item" onclick="scrollToSurah(34)">34. سبإ</a>
-<a href="#surah-35" class="idx-item" onclick="scrollToSurah(35)">35. فاطر</a>
-<a href="#surah-36" class="idx-item" onclick="scrollToSurah(36)">36. يس</a>
-<a href="#surah-37" class="idx-item" onclick="scrollToSurah(37)">37. الصافات</a>
-<a href="#surah-38" class="idx-item" onclick="scrollToSurah(38)">38. ص</a>
-<a href="#surah-39" class="idx-item" onclick="scrollToSurah(39)">39. الزمر</a>
-<a href="#surah-40" class="idx-item" onclick="scrollToSurah(40)">40. غافر</a>
-<a href="#surah-41" class="idx-item" onclick="scrollToSurah(41)">41. فصلت</a>
-<a href="#surah-42" class="idx-item" onclick="scrollToSurah(42)">42. الشورى</a>
-<a href="#surah-43" class="idx-item" onclick="scrollToSurah(43)">43. الزخرف</a>
-<a href="#surah-44" class="idx-item" onclick="scrollToSurah(44)">44. الدخان</a>
-<a href="#surah-45" class="idx-item" onclick="scrollToSurah(45)">45. الجاثية</a>
-<a href="#surah-46" class="idx-item" onclick="scrollToSurah(46)">46. الأحقاف</a>
-<a href="#surah-47" class="idx-item" onclick="scrollToSurah(47)">47. محمد</a>
-<a href="#surah-48" class="idx-item" onclick="scrollToSurah(48)">48. الفتح</a>
-<a href="#surah-49" class="idx-item" onclick="scrollToSurah(49)">49. الحجرات</a>
-<a href="#surah-50" class="idx-item" onclick="scrollToSurah(50)">50. ق</a>
-<a href="#surah-51" class="idx-item" onclick="scrollToSurah(51)">51. الذاريات</a>
-<a href="#surah-52" class="idx-item" onclick="scrollToSurah(52)">52. الطور</a>
-<a href="#surah-53" class="idx-item" onclick="scrollToSurah(53)">53. النجم</a>
-<a href="#surah-54" class="idx-item" onclick="scrollToSurah(54)">54. القمر</a>
-<a href="#surah-55" class="idx-item" onclick="scrollToSurah(55)">55. الرحمن</a>
-<a href="#surah-56" class="idx-item" onclick="scrollToSurah(56)">56. الواقعة</a>
-<a href="#surah-57" class="idx-item" onclick="scrollToSurah(57)">57. الحديد</a>
-<a href="#surah-58" class="idx-item" onclick="scrollToSurah(58)">58. المجادلة</a>
-<a href="#surah-59" class="idx-item" onclick="scrollToSurah(59)">59. الحشر</a>
-<a href="#surah-60" class="idx-item" onclick="scrollToSurah(60)">60. الممتحنة</a>
-<a href="#surah-61" class="idx-item" onclick="scrollToSurah(61)">61. الصف</a>
-<a href="#surah-62" class="idx-item" onclick="scrollToSurah(62)">62. الجمعة</a>
-<a href="#surah-63" class="idx-item" onclick="scrollToSurah(63)">63. المنافقون</a>
-<a href="#surah-64" class="idx-item" onclick="scrollToSurah(64)">64. التغابن</a>
-<a href="#surah-65" class="idx-item" onclick="scrollToSurah(65)">65. الطلاق</a>
-<a href="#surah-66" class="idx-item" onclick="scrollToSurah(66)">66. التحريم</a>
-<a href="#surah-67" class="idx-item" onclick="scrollToSurah(67)">67. الملك</a>
-<a href="#surah-68" class="idx-item" onclick="scrollToSurah(68)">68. القلم</a>
-<a href="#surah-69" class="idx-item" onclick="scrollToSurah(69)">69. الحاقة</a>
-<a href="#surah-70" class="idx-item" onclick="scrollToSurah(70)">70. المعارج</a>
-<a href="#surah-71" class="idx-item" onclick="scrollToSurah(71)">71. نوح</a>
-<a href="#surah-72" class="idx-item" onclick="scrollToSurah(72)">72. الجن</a>
-<a href="#surah-73" class="idx-item" onclick="scrollToSurah(73)">73. المزمل</a>
-<a href="#surah-74" class="idx-item" onclick="scrollToSurah(74)">74. المدثر</a>
-<a href="#surah-75" class="idx-item" onclick="scrollToSurah(75)">75. القيامة</a>
-<a href="#surah-76" class="idx-item" onclick="scrollToSurah(76)">76. الإنسان</a>
-<a href="#surah-77" class="idx-item" onclick="scrollToSurah(77)">77. المرسلات</a>
-<a href="#surah-78" class="idx-item" onclick="scrollToSurah(78)">78. النبأ</a>
-<a href="#surah-79" class="idx-item" onclick="scrollToSurah(79)">79. النازعات</a>
-<a href="#surah-80" class="idx-item" onclick="scrollToSurah(80)">80. عبس</a>
-<a href="#surah-81" class="idx-item" onclick="scrollToSurah(81)">81. التكوير</a>
-<a href="#surah-82" class="idx-item" onclick="scrollToSurah(82)">82. الانفطار</a>
-<a href="#surah-83" class="idx-item" onclick="scrollToSurah(83)">83. المطففين</a>
-<a href="#surah-84" class="idx-item" onclick="scrollToSurah(84)">84. الانشقاق</a>
-<a href="#surah-85" class="idx-item" onclick="scrollToSurah(85)">85. البروج</a>
-<a href="#surah-86" class="idx-item" onclick="scrollToSurah(86)">86. الطارق</a>
-<a href="#surah-87" class="idx-item" onclick="scrollToSurah(87)">87. الأعلى</a>
-<a href="#surah-88" class="idx-item" onclick="scrollToSurah(88)">88. الغاشية</a>
-<a href="#surah-89" class="idx-item" onclick="scrollToSurah(89)">89. الفجر</a>
-<a href="#surah-90" class="idx-item" onclick="scrollToSurah(90)">90. البلد</a>
-<a href="#surah-91" class="idx-item" onclick="scrollToSurah(91)">91. الشمس</a>
-<a href="#surah-92" class="idx-item" onclick="scrollToSurah(92)">92. الليل</a>
-<a href="#surah-93" class="idx-item" onclick="scrollToSurah(93)">93. الضحى</a>
-<a href="#surah-94" class="idx-item" onclick="scrollToSurah(94)">94. الشرح</a>
-<a href="#surah-95" class="idx-item" onclick="scrollToSurah(95)">95. التين</a>
-<a href="#surah-96" class="idx-item" onclick="scrollToSurah(96)">96. العلق</a>
-<a href="#surah-97" class="idx-item" onclick="scrollToSurah(97)">97. القدر</a>
-<a href="#surah-98" class="idx-item" onclick="scrollToSurah(98)">98. البينة</a>
-<a href="#surah-99" class="idx-item" onclick="scrollToSurah(99)">99. الزلزلة</a>
-<a href="#surah-100" class="idx-item" onclick="scrollToSurah(100)">100. العاديات</a>
-<a href="#surah-101" class="idx-item" onclick="scrollToSurah(101)">101. القارعة</a>
-<a href="#surah-102" class="idx-item" onclick="scrollToSurah(102)">102. التكاثر</a>
-<a href="#surah-103" class="idx-item" onclick="scrollToSurah(103)">103. العصر</a>
-<a href="#surah-104" class="idx-item" onclick="scrollToSurah(104)">104. الهمزة</a>
-<a href="#surah-105" class="idx-item" onclick="scrollToSurah(105)">105. الفيل</a>
-<a href="#surah-106" class="idx-item" onclick="scrollToSurah(106)">106. قريش</a>
-<a href="#surah-107" class="idx-item" onclick="scrollToSurah(107)">107. الماعون</a>
-<a href="#surah-108" class="idx-item" onclick="scrollToSurah(108)">108. الكوثر</a>
-<a href="#surah-109" class="idx-item" onclick="scrollToSurah(109)">109. الكافرون</a>
-<a href="#surah-110" class="idx-item" onclick="scrollToSurah(110)">110. النصر</a>
-<a href="#surah-111" class="idx-item" onclick="scrollToSurah(111)">111. المسد</a>
-<a href="#surah-112" class="idx-item" onclick="scrollToSurah(112)">112. الإخلاص</a>
-<a href="#surah-113" class="idx-item" onclick="scrollToSurah(113)">113. الفلق</a>
-<a href="#surah-114" class="idx-item" onclick="scrollToSurah(114)">114. الناس</a>
-    </div>
+    <ul id="index-container" data-role="listview" data-inset="false" data-icon="false">
+<li><a href="#surah-1" class="idx-item" onclick="scrollToSurah(1)">1. الفاتحة</a></li>
+<li><a href="#surah-2" class="idx-item" onclick="scrollToSurah(2)">2. البقرة</a></li>
+<li><a href="#surah-3" class="idx-item" onclick="scrollToSurah(3)">3. آل عمران</a></li>
+<li><a href="#surah-4" class="idx-item" onclick="scrollToSurah(4)">4. النساء</a></li>
+<li><a href="#surah-5" class="idx-item" onclick="scrollToSurah(5)">5. المائدة</a></li>
+<li><a href="#surah-6" class="idx-item" onclick="scrollToSurah(6)">6. الأنعام</a></li>
+<li><a href="#surah-7" class="idx-item" onclick="scrollToSurah(7)">7. الأعراف</a></li>
+<li><a href="#surah-8" class="idx-item" onclick="scrollToSurah(8)">8. الأنفال</a></li>
+<li><a href="#surah-9" class="idx-item" onclick="scrollToSurah(9)">9. التوبة</a></li>
+<li><a href="#surah-10" class="idx-item" onclick="scrollToSurah(10)">10. يونس</a></li>
+<li><a href="#surah-11" class="idx-item" onclick="scrollToSurah(11)">11. هود</a></li>
+<li><a href="#surah-12" class="idx-item" onclick="scrollToSurah(12)">12. يوسف</a></li>
+<li><a href="#surah-13" class="idx-item" onclick="scrollToSurah(13)">13. الرعد</a></li>
+<li><a href="#surah-14" class="idx-item" onclick="scrollToSurah(14)">14. إبراهيم</a></li>
+<li><a href="#surah-15" class="idx-item" onclick="scrollToSurah(15)">15. الحجر</a></li>
+<li><a href="#surah-16" class="idx-item" onclick="scrollToSurah(16)">16. النحل</a></li>
+<li><a href="#surah-17" class="idx-item" onclick="scrollToSurah(17)">17. الإسراء</a></li>
+<li><a href="#surah-18" class="idx-item" onclick="scrollToSurah(18)">18. الكهف</a></li>
+<li><a href="#surah-19" class="idx-item" onclick="scrollToSurah(19)">19. مريم</a></li>
+<li><a href="#surah-20" class="idx-item" onclick="scrollToSurah(20)">20. طه</a></li>
+<li><a href="#surah-21" class="idx-item" onclick="scrollToSurah(21)">21. الأنبياء</a></li>
+<li><a href="#surah-22" class="idx-item" onclick="scrollToSurah(22)">22. الحج</a></li>
+<li><a href="#surah-23" class="idx-item" onclick="scrollToSurah(23)">23. المؤمنون</a></li>
+<li><a href="#surah-24" class="idx-item" onclick="scrollToSurah(24)">24. النور</a></li>
+<li><a href="#surah-25" class="idx-item" onclick="scrollToSurah(25)">25. الفرقان</a></li>
+<li><a href="#surah-26" class="idx-item" onclick="scrollToSurah(26)">26. الشعراء</a></li>
+<li><a href="#surah-27" class="idx-item" onclick="scrollToSurah(27)">27. النمل</a></li>
+<li><a href="#surah-28" class="idx-item" onclick="scrollToSurah(28)">28. القصص</a></li>
+<li><a href="#surah-29" class="idx-item" onclick="scrollToSurah(29)">29. العنكبوت</a></li>
+<li><a href="#surah-30" class="idx-item" onclick="scrollToSurah(30)">30. الروم</a></li>
+<li><a href="#surah-31" class="idx-item" onclick="scrollToSurah(31)">31. لقمان</a></li>
+<li><a href="#surah-32" class="idx-item" onclick="scrollToSurah(32)">32. السجدة</a></li>
+<li><a href="#surah-33" class="idx-item" onclick="scrollToSurah(33)">33. الأحزاب</a></li>
+<li><a href="#surah-34" class="idx-item" onclick="scrollToSurah(34)">34. سبإ</a></li>
+<li><a href="#surah-35" class="idx-item" onclick="scrollToSurah(35)">35. فاطر</a></li>
+<li><a href="#surah-36" class="idx-item" onclick="scrollToSurah(36)">36. يس</a></li>
+<li><a href="#surah-37" class="idx-item" onclick="scrollToSurah(37)">37. الصافات</a></li>
+<li><a href="#surah-38" class="idx-item" onclick="scrollToSurah(38)">38. ص</a></li>
+<li><a href="#surah-39" class="idx-item" onclick="scrollToSurah(39)">39. الزمر</a></li>
+<li><a href="#surah-40" class="idx-item" onclick="scrollToSurah(40)">40. غافر</a></li>
+<li><a href="#surah-41" class="idx-item" onclick="scrollToSurah(41)">41. فصلت</a></li>
+<li><a href="#surah-42" class="idx-item" onclick="scrollToSurah(42)">42. الشورى</a></li>
+<li><a href="#surah-43" class="idx-item" onclick="scrollToSurah(43)">43. الزخرف</a></li>
+<li><a href="#surah-44" class="idx-item" onclick="scrollToSurah(44)">44. الدخان</a></li>
+<li><a href="#surah-45" class="idx-item" onclick="scrollToSurah(45)">45. الجاثية</a></li>
+<li><a href="#surah-46" class="idx-item" onclick="scrollToSurah(46)">46. الأحقاف</a></li>
+<li><a href="#surah-47" class="idx-item" onclick="scrollToSurah(47)">47. محمد</a></li>
+<li><a href="#surah-48" class="idx-item" onclick="scrollToSurah(48)">48. الفتح</a></li>
+<li><a href="#surah-49" class="idx-item" onclick="scrollToSurah(49)">49. الحجرات</a></li>
+<li><a href="#surah-50" class="idx-item" onclick="scrollToSurah(50)">50. ق</a></li>
+<li><a href="#surah-51" class="idx-item" onclick="scrollToSurah(51)">51. الذاريات</a></li>
+<li><a href="#surah-52" class="idx-item" onclick="scrollToSurah(52)">52. الطور</a></li>
+<li><a href="#surah-53" class="idx-item" onclick="scrollToSurah(53)">53. النجم</a></li>
+<li><a href="#surah-54" class="idx-item" onclick="scrollToSurah(54)">54. القمر</a></li>
+<li><a href="#surah-55" class="idx-item" onclick="scrollToSurah(55)">55. الرحمن</a></li>
+<li><a href="#surah-56" class="idx-item" onclick="scrollToSurah(56)">56. الواقعة</a></li>
+<li><a href="#surah-57" class="idx-item" onclick="scrollToSurah(57)">57. الحديد</a></li>
+<li><a href="#surah-58" class="idx-item" onclick="scrollToSurah(58)">58. المجادلة</a></li>
+<li><a href="#surah-59" class="idx-item" onclick="scrollToSurah(59)">59. الحشر</a></li>
+<li><a href="#surah-60" class="idx-item" onclick="scrollToSurah(60)">60. الممتحنة</a></li>
+<li><a href="#surah-61" class="idx-item" onclick="scrollToSurah(61)">61. الصف</a></li>
+<li><a href="#surah-62" class="idx-item" onclick="scrollToSurah(62)">62. الجمعة</a></li>
+<li><a href="#surah-63" class="idx-item" onclick="scrollToSurah(63)">63. المنافقون</a></li>
+<li><a href="#surah-64" class="idx-item" onclick="scrollToSurah(64)">64. التغابن</a></li>
+<li><a href="#surah-65" class="idx-item" onclick="scrollToSurah(65)">65. الطلاق</a></li>
+<li><a href="#surah-66" class="idx-item" onclick="scrollToSurah(66)">66. التحريم</a></li>
+<li><a href="#surah-67" class="idx-item" onclick="scrollToSurah(67)">67. الملك</a></li>
+<li><a href="#surah-68" class="idx-item" onclick="scrollToSurah(68)">68. القلم</a></li>
+<li><a href="#surah-69" class="idx-item" onclick="scrollToSurah(69)">69. الحاقة</a></li>
+<li><a href="#surah-70" class="idx-item" onclick="scrollToSurah(70)">70. المعارج</a></li>
+<li><a href="#surah-71" class="idx-item" onclick="scrollToSurah(71)">71. نوح</a></li>
+<li><a href="#surah-72" class="idx-item" onclick="scrollToSurah(72)">72. الجن</a></li>
+<li><a href="#surah-73" class="idx-item" onclick="scrollToSurah(73)">73. المزمل</a></li>
+<li><a href="#surah-74" class="idx-item" onclick="scrollToSurah(74)">74. المدثر</a></li>
+<li><a href="#surah-75" class="idx-item" onclick="scrollToSurah(75)">75. القيامة</a></li>
+<li><a href="#surah-76" class="idx-item" onclick="scrollToSurah(76)">76. الإنسان</a></li>
+<li><a href="#surah-77" class="idx-item" onclick="scrollToSurah(77)">77. المرسلات</a></li>
+<li><a href="#surah-78" class="idx-item" onclick="scrollToSurah(78)">78. النبأ</a></li>
+<li><a href="#surah-79" class="idx-item" onclick="scrollToSurah(79)">79. النازعات</a></li>
+<li><a href="#surah-80" class="idx-item" onclick="scrollToSurah(80)">80. عبس</a></li>
+<li><a href="#surah-81" class="idx-item" onclick="scrollToSurah(81)">81. التكوير</a></li>
+<li><a href="#surah-82" class="idx-item" onclick="scrollToSurah(82)">82. الانفطار</a></li>
+<li><a href="#surah-83" class="idx-item" onclick="scrollToSurah(83)">83. المطففين</a></li>
+<li><a href="#surah-84" class="idx-item" onclick="scrollToSurah(84)">84. الانشقاق</a></li>
+<li><a href="#surah-85" class="idx-item" onclick="scrollToSurah(85)">85. البروج</a></li>
+<li><a href="#surah-86" class="idx-item" onclick="scrollToSurah(86)">86. الطارق</a></li>
+<li><a href="#surah-87" class="idx-item" onclick="scrollToSurah(87)">87. الأعلى</a></li>
+<li><a href="#surah-88" class="idx-item" onclick="scrollToSurah(88)">88. الغاشية</a></li>
+<li><a href="#surah-89" class="idx-item" onclick="scrollToSurah(89)">89. الفجر</a></li>
+<li><a href="#surah-90" class="idx-item" onclick="scrollToSurah(90)">90. البلد</a></li>
+<li><a href="#surah-91" class="idx-item" onclick="scrollToSurah(91)">91. الشمس</a></li>
+<li><a href="#surah-92" class="idx-item" onclick="scrollToSurah(92)">92. الليل</a></li>
+<li><a href="#surah-93" class="idx-item" onclick="scrollToSurah(93)">93. الضحى</a></li>
+<li><a href="#surah-94" class="idx-item" onclick="scrollToSurah(94)">94. الشرح</a></li>
+<li><a href="#surah-95" class="idx-item" onclick="scrollToSurah(95)">95. التين</a></li>
+<li><a href="#surah-96" class="idx-item" onclick="scrollToSurah(96)">96. العلق</a></li>
+<li><a href="#surah-97" class="idx-item" onclick="scrollToSurah(97)">97. القدر</a></li>
+<li><a href="#surah-98" class="idx-item" onclick="scrollToSurah(98)">98. البينة</a></li>
+<li><a href="#surah-99" class="idx-item" onclick="scrollToSurah(99)">99. الزلزلة</a></li>
+<li><a href="#surah-100" class="idx-item" onclick="scrollToSurah(100)">100. العاديات</a></li>
+<li><a href="#surah-101" class="idx-item" onclick="scrollToSurah(101)">101. القارعة</a></li>
+<li><a href="#surah-102" class="idx-item" onclick="scrollToSurah(102)">102. التكاثر</a></li>
+<li><a href="#surah-103" class="idx-item" onclick="scrollToSurah(103)">103. العصر</a></li>
+<li><a href="#surah-104" class="idx-item" onclick="scrollToSurah(104)">104. الهمزة</a></li>
+<li><a href="#surah-105" class="idx-item" onclick="scrollToSurah(105)">105. الفيل</a></li>
+<li><a href="#surah-106" class="idx-item" onclick="scrollToSurah(106)">106. قريش</a></li>
+<li><a href="#surah-107" class="idx-item" onclick="scrollToSurah(107)">107. الماعون</a></li>
+<li><a href="#surah-108" class="idx-item" onclick="scrollToSurah(108)">108. الكوثر</a></li>
+<li><a href="#surah-109" class="idx-item" onclick="scrollToSurah(109)">109. الكافرون</a></li>
+<li><a href="#surah-110" class="idx-item" onclick="scrollToSurah(110)">110. النصر</a></li>
+<li><a href="#surah-111" class="idx-item" onclick="scrollToSurah(111)">111. المسد</a></li>
+<li><a href="#surah-112" class="idx-item" onclick="scrollToSurah(112)">112. الإخلاص</a></li>
+<li><a href="#surah-113" class="idx-item" onclick="scrollToSurah(113)">113. الفلق</a></li>
+<li><a href="#surah-114" class="idx-item" onclick="scrollToSurah(114)">114. الناس</a></li>
+    </ul>
   </div>
 
   <div class="display-group">
@@ -906,6 +920,7 @@ function closeSidebar() {
 }
 ensureSidebarPanel();
 $('#surah-collapsible').collapsible();
+$('#index-container').listview();
 // jQuery Mobile hides <html> for up to 5s to avoid a flash of unenhanced
 // content while it waits for a "page" to show - we never use its page
 // system, so remove that guard immediately instead of waiting.
