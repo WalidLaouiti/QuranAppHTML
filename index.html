@@ -9,15 +9,33 @@
 <link rel="stylesheet" href="lib/jquery-mobile-1.4.5/jquery.mobile-1.4.5.min.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background: #faf8f4; color: #1a1a1a; direction: rtl; }
+
+/* Theme: light "plant greenery" palette */
+:root {
+  --bg-page: #f4f9f1;
+  --bg-sidebar: #e8f2e2;
+  --bg-sidebar-header: #d7e8cd;
+  --bg-input: #ffffff;
+  --border-soft: #cfe3c4;
+  --green-deep: #234d2a;
+  --green-medium: #4a8f50;
+  --green-medium-2: #6fae5e;
+  --green-muted: #5d7d5f;
+  --green-faint: #87ab8a;
+  --cream: #f3f1e3;
+  --gold: #c9a84c;
+  --gold-hover: #dbbe6a;
+}
+
+body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background: var(--bg-page); color: #1a1a1a; direction: rtl; }
 
 /* Layout */
 #app { display: flex; min-height: 100vh; }
 
 /* Sidebar */
 #sidebar {
-  background: #1e3a2f;
-  color: #e8dcc8;
+  background: var(--bg-sidebar);
+  color: var(--green-deep);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -37,48 +55,20 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   flex-direction: column;
   height: 100%;
   padding: 0;
-  overflow: hidden;
+  overflow-y: auto;
 }
 #sidebar-header {
   padding: 16px;
-  background: #142a21;
-  border-bottom: 1px solid #2d5a43;
+  background: var(--bg-sidebar-header);
+  border-bottom: 1px solid var(--border-soft);
 }
 #sidebar-header h2 {
   font-size: 18px;
-  color: #c9a84c;
+  color: var(--green-deep);
   text-align: center;
   margin-bottom: 10px;
-  font-weight: normal;
+  font-weight: 700;
   letter-spacing: 1px;
-}
-
-/* Stats */
-.stats-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.stat-box {
-  flex: 1;
-  background: #0f211a;
-  border-radius: 6px;
-  padding: 8px 6px;
-  text-align: center;
-  border: 1px solid #2d5a43;
-}
-.stat-label {
-  font-size: 14px;
-  color: #8ab5a0;
-  display: block;
-  margin-bottom: 4px;
-  font-family: "Noto Kufi Arabic", serif;
-}
-.stat-value {
-  font-size: 28px;
-  font-weight: bold;
-  color: #c9a84c;
-  display: block;
 }
 
 /* Search */
@@ -90,10 +80,10 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 #search-box {
   width: 100%;
   padding: 8px 10px;
-  background: #0f211a;
-  border: 1px solid #2d5a43;
+  background: var(--bg-input);
+  border: 1px solid var(--border-soft);
   border-radius: 6px;
-  color: #e8dcc8;
+  color: var(--green-deep);
   font-family: "Noto Kufi Arabic", serif;
   font-size: 15px;
   direction: rtl;
@@ -102,8 +92,8 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 #search-btn {
   width: 100%;
   padding: 8px 12px;
-  background: #c9a84c;
-  color: #1e3a2f;
+  background: var(--gold);
+  color: var(--green-deep);
   border: none;
   border-radius: 6px;
   font-family: "Noto Kufi Arabic", serif;
@@ -113,9 +103,9 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   white-space: nowrap;
   transition: background 0.15s;
 }
-#search-btn:hover { background: #dbbe6a; }
-#search-box::placeholder { color: #5a8070; }
-#search-box:focus { border-color: #c9a84c; outline: none; }
+#search-btn:hover { background: var(--gold-hover); }
+#search-box::placeholder { color: var(--green-faint); }
+#search-box:focus { border-color: var(--gold); outline: none; }
 #display-options {
   display: flex;
   flex-wrap: wrap;
@@ -124,54 +114,99 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   margin-top: 6px;
 }
 .display-group {
-  margin-top: 6px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
 }
 .display-group-title {
-  font-size: 12px;
-  color: #8ab5a0;
-  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green-muted);
+  margin-bottom: 6px;
 }
 .display-option {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #dce9e1;
+  color: var(--green-deep);
   font-size: 13px;
   cursor: pointer;
 }
 .display-option input {
-  accent-color: #c9a84c;
+  accent-color: var(--gold);
   cursor: pointer;
 }
 #search-count {
   font-size: 12px;
-  color: #8ab5a0;
+  color: var(--green-muted);
   margin-top: 5px;
   text-align: center;
   min-height: 16px;
 }
 
-/* Index */
-#index-container {
-  flex: 1;
+/* Search results */
+#search-results-wrap { display: none; padding: 0 16px 12px; }
+#search-results {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+#search-results tr {
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-soft);
+}
+#search-results tr:hover { background: var(--bg-sidebar-header); }
+#search-results td {
+  padding: 6px 4px;
+  vertical-align: top;
+  color: var(--green-deep);
+}
+#search-results td.res-snippet { line-height: 1.5; }
+#search-results td.res-meta {
+  white-space: nowrap;
+  color: var(--green-muted);
+  font-size: 12px;
+  text-align: left;
+}
+
+/* Surah list collapsible (jQuery Mobile collapsible widget) */
+#surah-collapsible.ui-collapsible { margin: 0; }
+#surah-collapsible .ui-collapsible-heading-toggle {
+  display: block;
+  padding: 12px 16px;
+  background: var(--bg-sidebar-header);
+  color: var(--green-deep);
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  border: none;
+  border-bottom: 1px solid var(--border-soft);
+  border-radius: 0;
+}
+#surah-collapsible .ui-collapsible-content {
+  padding: 0;
+  border: none;
+  background: var(--bg-sidebar);
+  max-height: 320px;
   overflow-y: auto;
+}
+
+/* Index (surah list, inside jQuery Mobile collapsible) */
+#index-container {
   padding: 4px 0;
 }
-#index-container::-webkit-scrollbar { width: 4px; }
-#index-container::-webkit-scrollbar-track { background: #1e3a2f; }
-#index-container::-webkit-scrollbar-thumb { background: #2d5a43; border-radius: 2px; }
 
 .idx-item {
   display: block;
   padding: 7px 16px;
-  color: #b8d4c8;
+  color: var(--green-deep);
   text-decoration: none;
   font-size: 14px;
   transition: all 0.15s;
   border-right: 3px solid transparent;
 }
-.idx-item:hover { background: #142a21; color: #c9a84c; border-right-color: #c9a84c; }
-.idx-item.active { background: #0f211a; color: #c9a84c; border-right-color: #c9a84c; font-weight: bold; }
+.idx-item:hover { background: var(--bg-sidebar-header); color: var(--green-medium); border-right-color: var(--gold); }
+.idx-item.active { background: var(--border-soft); color: var(--green-deep); border-right-color: var(--gold); font-weight: bold; }
 
 /* Main content */
 #main-content {
@@ -186,11 +221,11 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   text-align: center;
   padding: 16px;
   margin-bottom: 20px;
-  border-bottom: 2px solid #c9a84c;
+  border-bottom: 2px solid var(--gold);
 }
 #page-title h1 {
   font-size: 28px;
-  color: #1e3a2f;
+  color: var(--green-deep);
   font-weight: normal;
 }
 
@@ -205,13 +240,13 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   gap: 12px;
   margin-bottom: 12px;
   padding: 10px 16px;
-  background: linear-gradient(135deg, #1e3a2f, #2d5a43);
+  background: linear-gradient(135deg, var(--green-medium), var(--green-medium-2));
   border-radius: 8px;
   direction: rtl;
 }
 .surah-num {
-  background: #c9a84c;
-  color: #1e3a2f;
+  background: var(--gold);
+  color: var(--green-deep);
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -224,7 +259,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   font-family: Arial, sans-serif;
 }
 .surah-name {
-  color: #e8dcc8;
+  color: var(--cream);
   font-size: 38px;
   font-weight: 700;
   font-family: "Amiri", "Noto Kufi Arabic", serif;
@@ -238,7 +273,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   padding: 16px;
   background: white;
   border-radius: 8px;
-  border: 1px solid #e0d8c8;
+  border: 1px solid var(--border-soft);
   direction: rtl;
   cursor: text;
   user-select: text;
@@ -267,8 +302,8 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 #selection-bar {
   position: sticky;
   top: 0;
-  background: #faf8f4;
-  border-bottom: 1px solid #e0d8c8;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border-soft);
   padding: 8px 0 12px;
   margin-bottom: 8px;
   z-index: 10;
@@ -279,13 +314,13 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   flex-wrap: wrap;
 }
 .sel-badge {
-  background: #1e3a2f;
-  color: #c9a84c;
+  background: var(--green-medium);
+  color: var(--cream);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 14px;
 }
-.sel-badge span { color: white; margin-right: 4px; }
+.sel-badge span { color: var(--gold); margin-right: 4px; }
 
 /* Sidebar toggle (mobile) */
 #sidebar-toggle {
@@ -296,15 +331,15 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   z-index: 1100;
   width: 44px;
   height: 44px;
-  background: #1e3a2f;
-  color: #c9a84c;
+  background: var(--green-medium);
+  color: var(--cream);
   border: none;
   border-radius: 8px;
   font-size: 22px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 @media (max-width: 768px) {
@@ -318,7 +353,6 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 
 @media (max-width: 480px) {
   .surah-text { font-size: 16px; }
-  .stat-value { font-size: 22px; }
 }
 </style>
 </head>
@@ -332,36 +366,11 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 <div id="sidebar" data-role="panel" data-display="overlay" data-position="right" data-position-fixed="true">
   <div id="sidebar-header">
     <h2>القرآن الكريم</h2>
-    <div class="stats-row">
-      <div class="stat-box">
-        <span class="stat-label">الكلمات</span>
-        <span class="stat-value" id="words">—</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">الحروف</span>
-        <span class="stat-value" id="lettres">—</span>
-      </div>
-    </div>
-    <div id="search-row">
-      <input type="text" id="search-box" placeholder="ابحث في القرآن الكريم..." onkeydown="if(event.key==='Enter') doSearch(this.value)">
-      <button id="search-btn" onclick="doSearch(document.getElementById('search-box').value)">ابحث</button>
-      <div class="display-group">
-        <div class="display-group-title">عرض الآيات</div>
-        <div id="display-options">
-          <label class="display-option">
-            <input type="radio" name="verse-layout" value="continuous" checked onchange="setVerseLayout(this.value)">
-            <span>متواصل</span>
-          </label>
-          <label class="display-option">
-            <input type="radio" name="verse-layout" value="sequential" onchange="setVerseLayout(this.value)">
-            <span>متتالي</span>
-          </label>
-        </div>
-      </div>
-    </div>
-    <div id="search-count"></div>
   </div>
-  <div id="index-container">
+
+  <div id="surah-collapsible" data-role="collapsible" data-collapsed="true">
+    <h3>فهرس السور</h3>
+    <div id="index-container">
 <a href="#surah-1" class="idx-item" onclick="scrollToSurah(1)">1. الفاتحة</a>
 <a href="#surah-2" class="idx-item" onclick="scrollToSurah(2)">2. البقرة</a>
 <a href="#surah-3" class="idx-item" onclick="scrollToSurah(3)">3. آل عمران</a>
@@ -476,7 +485,31 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 <a href="#surah-112" class="idx-item" onclick="scrollToSurah(112)">112. الإخلاص</a>
 <a href="#surah-113" class="idx-item" onclick="scrollToSurah(113)">113. الفلق</a>
 <a href="#surah-114" class="idx-item" onclick="scrollToSurah(114)">114. الناس</a>
+    </div>
+  </div>
 
+  <div class="display-group">
+    <div class="display-group-title">عرض الآيات</div>
+    <div id="display-options">
+      <label class="display-option">
+        <input type="radio" name="verse-layout" value="continuous" checked onchange="setVerseLayout(this.value)">
+        <span>متواصل</span>
+      </label>
+      <label class="display-option">
+        <input type="radio" name="verse-layout" value="sequential" onchange="setVerseLayout(this.value)">
+        <span>متتالي</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="display-group" id="search-row">
+    <div class="display-group-title">بحث</div>
+    <input type="text" id="search-box" placeholder="ابحث في القرآن الكريم..." onkeydown="if(event.key==='Enter') doSearch(this.value)">
+    <button id="search-btn" onclick="doSearch(document.getElementById('search-box').value)">ابحث</button>
+    <div id="search-count"></div>
+    <div id="search-results-wrap">
+      <table id="search-results"><tbody></tbody></table>
+    </div>
   </div>
 </div>
 
@@ -639,8 +672,6 @@ function updateCount() {
     }
   }
   if (!text || !text.trim()) {
-    document.getElementById('words').textContent = '—';
-    document.getElementById('lettres').textContent = '—';
     document.getElementById('words2').textContent = 'حدد نصاً';
     document.getElementById('lettres2').textContent = '—';
     return;
@@ -648,8 +679,6 @@ function updateCount() {
   text = text.trim();
   var words = text.split(/\s+/).filter(function(w) { return w.length > 0; }).length;
   var letters = text.replace(/[0-9﴿﴾ ـ\s]/g, '').length;
-  document.getElementById('words').textContent = words;
-  document.getElementById('lettres').textContent = letters;
   document.getElementById('words2').textContent = words;
   document.getElementById('lettres2').textContent = letters;
 }
@@ -706,6 +735,8 @@ function renderVerseLayout() {
       var block = document.createElement(verseLayout === 'sequential' ? 'div' : 'span');
       block.className = 'aya';
       block.textContent = verse;
+      var m = verse.match(/﴿(\d+)﴾/);
+      if (m) block.id = 'aya-' + m[1];
       frag.appendChild(block);
     });
 
@@ -736,6 +767,7 @@ function doSearch(q) {
   
   if (!q || q.length < 2) {
     countEl.textContent = '';
+    renderSearchResults('');
     return;
   }
   
@@ -766,12 +798,76 @@ function doSearch(q) {
   });
   
   countEl.textContent = count > 0 ? 'وُجد ' + count + ' نتيجة' : 'لا نتائج';
-  
+
   // Scroll to first match
   if (count > 0) {
     var first = content.querySelector('.highlight');
     if (first) first.scrollIntoView({behavior: 'smooth', block: 'center'});
   }
+
+  renderSearchResults(q);
+}
+
+// Search results list (sidebar): one row per matching aya, clickable to jump to it
+function renderSearchResults(q) {
+  var wrap = document.getElementById('search-results-wrap');
+  var tbody = document.querySelector('#search-results tbody');
+  tbody.innerHTML = '';
+
+  if (!q) {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  var MAX = 200;
+  var results = [];
+  document.querySelectorAll('.surah').forEach(function(surahEl) {
+    var nameEl = surahEl.querySelector('.surah-name');
+    var name = nameEl ? nameEl.textContent : '';
+    var ayas = surahEl.querySelectorAll('.surah-text .aya');
+    ayas.forEach(function(aya, idx) {
+      if (results.length < MAX && aya.textContent.includes(q)) {
+        results.push({ id: aya.id, name: name, localNum: idx + 1, text: aya.textContent });
+      }
+    });
+  });
+
+  if (results.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  results.forEach(function(r) {
+    var snippet = r.text.replace(/﴿\d+﴾/g, '').trim();
+    if (snippet.length > 60) snippet = snippet.slice(0, 60) + '…';
+
+    var tr = document.createElement('tr');
+    tr.addEventListener('click', function() { goToAya(r.id); });
+
+    var tdSnippet = document.createElement('td');
+    tdSnippet.className = 'res-snippet';
+    tdSnippet.textContent = snippet;
+
+    var tdMeta = document.createElement('td');
+    tdMeta.className = 'res-meta';
+    tdMeta.textContent = r.name + ' · ' + r.localNum;
+
+    tr.appendChild(tdSnippet);
+    tr.appendChild(tdMeta);
+    tbody.appendChild(tr);
+  });
+
+  wrap.style.display = 'block';
+}
+
+// Jump to a specific aya from the search results list
+function goToAya(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({behavior: 'smooth', block: 'center'});
+  el.classList.add('highlight-current');
+  setTimeout(function() { el.classList.remove('highlight-current'); }, 1500);
+  closeSidebar();
 }
 
 // Navigate to surah
@@ -809,6 +905,7 @@ function closeSidebar() {
   }
 }
 ensureSidebarPanel();
+$('#surah-collapsible').collapsible();
 // jQuery Mobile hides <html> for up to 5s to avoid a flash of unenhanced
 // content while it waits for a "page" to show - we never use its page
 // system, so remove that guard immediately instead of waiting.
