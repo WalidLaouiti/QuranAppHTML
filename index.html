@@ -202,7 +202,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   padding: 4px 0;
 }
 
-.idx-item {
+#index-container .idx-item {
   display: block;
   padding: 7px 16px;
   background: none;
@@ -211,6 +211,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   color: var(--green-deep);
   text-decoration: none;
   text-align: right;
+  direction: rtl;
   font-size: 14px;
   font-weight: normal;
   line-height: normal;
@@ -219,8 +220,8 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
   text-overflow: unset;
   transition: all 0.15s;
 }
-.idx-item:hover { background: var(--bg-sidebar-header); color: var(--green-medium); border-right-color: var(--gold); }
-.idx-item.active { background: var(--border-soft); color: var(--green-deep); border-right-color: var(--gold); font-weight: bold; }
+#index-container .idx-item:hover { background: var(--bg-sidebar-header); color: var(--green-medium); border-right-color: var(--gold); }
+#index-container .idx-item.active { background: var(--border-soft); color: var(--green-deep); border-right-color: var(--gold); font-weight: bold; }
 
 /* Main content */
 #main-content {
