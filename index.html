@@ -271,7 +271,7 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 /* Surah */
 .surah {
   margin-bottom: 32px;
-  scroll-margin-top: 94px;
+  scroll-margin-top: 75px; /* hauteur mesuree de #selection-bar (63px) + 12px de marge visuelle */
 }
 .surah-header {
   display: flex;
@@ -720,7 +720,7 @@ function updateCount() {
     }
   }
   if (!text || !text.trim()) {
-    document.getElementById('words2').textContent = 'حدد نصاً';
+    document.getElementById('words2').textContent = '—';
     document.getElementById('lettres2').textContent = '—';
     return;
   }
