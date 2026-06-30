@@ -399,6 +399,111 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 @media (max-width: 480px) {
   .surah-text { font-size: 16px; }
 }
+
+/* Selection tool (sidebar): extend the current text selection by N words/letters/verses */
+.select-count-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.select-count-label {
+  font-size: 13px;
+  color: var(--green-deep);
+  white-space: nowrap;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-input);
+}
+.stepper-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: var(--bg-sidebar-header);
+  color: var(--green-deep);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.stepper-btn:hover { background: var(--gold-hover); }
+.stepper input[type="number"] {
+  width: 46px;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+  color: var(--green-deep);
+  background: transparent;
+  outline: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.stepper input[type="number"]::-webkit-outer-spin-button,
+.stepper input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.select-unit-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.select-btn-row {
+  display: flex;
+  gap: 8px;
+}
+.select-dir-btn {
+  flex: 1;
+  padding: 8px 6px;
+  background: var(--gold);
+  color: var(--green-deep);
+  border: none;
+  border-radius: 6px;
+  font-family: "Noto Kufi Arabic", serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+.select-dir-btn:hover:not(:disabled) { background: var(--gold-hover); }
+.select-dir-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Floating selection toolbar: appears near the text selection outside the sidebar */
+#select-toolbar {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  padding: 8px 10px;
+  direction: rtl;
+}
+#select-toolbar .ft-count-row { display: flex; align-items: center; justify-content: center; }
+#select-toolbar .ft-unit-row { display: flex; gap: 8px; justify-content: center; font-size: 12px; }
+#select-toolbar .ft-unit-row label { display: flex; align-items: center; gap: 3px; color: var(--green-deep); cursor: pointer; white-space: nowrap; }
+#select-toolbar .ft-btn-row { display: flex; gap: 6px; }
+#select-toolbar .ft-btn-row button {
+  flex: 1;
+  padding: 6px 12px;
+  background: var(--gold);
+  border: none;
+  border-radius: 5px;
+  color: var(--green-deep);
+  font-weight: 700;
+  font-family: "Noto Kufi Arabic", serif;
+  cursor: pointer;
+}
+#select-toolbar .ft-btn-row button:hover { background: var(--gold-hover); }
 </style>
 </head>
 <body>
@@ -547,6 +652,27 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
     </div>
   </div>
 
+  <div class="display-group" id="select-row">
+    <div class="display-group-title">تحديد النص</div>
+    <div class="select-count-row">
+      <label for="select-count" class="select-count-label">العدد:</label>
+      <div class="stepper">
+        <button type="button" class="stepper-btn" onclick="adjustSelectCount('select-count', -1)" aria-label="إنقاص">−</button>
+        <input type="number" id="select-count" value="1" min="1" inputmode="numeric">
+        <button type="button" class="stepper-btn" onclick="adjustSelectCount('select-count', 1)" aria-label="زيادة">+</button>
+      </div>
+    </div>
+    <div class="select-unit-row">
+      <label class="display-option"><input type="radio" name="select-unit" value="ayat"><span>آيات</span></label>
+      <label class="display-option"><input type="radio" name="select-unit" value="words" checked><span>كلمات</span></label>
+      <label class="display-option"><input type="radio" name="select-unit" value="letters"><span>حروف</span></label>
+    </div>
+    <div class="select-btn-row">
+      <button type="button" id="select-before-btn" class="select-dir-btn" onclick="extendSelection('before')" disabled>► تحديد</button>
+      <button type="button" id="select-after-btn" class="select-dir-btn" onclick="extendSelection('after')" disabled>تحديد ◄</button>
+    </div>
+  </div>
+
   <div class="display-group" id="search-row">
     <div class="display-group-title">بحث</div>
     <input type="text" id="search-box" placeholder="ابحث في القرآن الكريم..." onkeydown="if(event.key==='Enter') doSearch(this.value)">
@@ -691,6 +817,26 @@ body { font-family: "Noto Kufi Arabic", "Traditional Arabic", serif; background:
 
 </div>
 
+<!-- Floating selection toolbar: appears near the text selection, outside the sidebar -->
+<div id="select-toolbar">
+  <div class="ft-count-row">
+    <div class="stepper">
+      <button type="button" class="stepper-btn" onclick="adjustSelectCount('ft-select-count', -1)" aria-label="إنقاص">−</button>
+      <input type="number" id="ft-select-count" value="1" min="1" inputmode="numeric">
+      <button type="button" class="stepper-btn" onclick="adjustSelectCount('ft-select-count', 1)" aria-label="زيادة">+</button>
+    </div>
+  </div>
+  <div class="ft-unit-row">
+    <label><input type="radio" name="ft-select-unit" value="ayat"><span>آيات</span></label>
+    <label><input type="radio" name="ft-select-unit" value="words" checked><span>كلمات</span></label>
+    <label><input type="radio" name="ft-select-unit" value="letters"><span>حروف</span></label>
+  </div>
+  <div class="ft-btn-row">
+    <button type="button" onclick="extendSelection('before', 'ft-select-count', 'ft-select-unit')">►</button>
+    <button type="button" onclick="extendSelection('after', 'ft-select-count', 'ft-select-unit')">◄</button>
+  </div>
+</div>
+
 <script src="lib/jquery-mobile-1.4.5/jquery-1.11.1.min.js"></script>
 <script>
 // Disable jQM's page/hash/link navigation system: this app is a single
@@ -731,9 +877,321 @@ function updateCount() {
   document.getElementById('lettres2').textContent = letters;
 }
 
-document.addEventListener('selectionchange', updateCount);
+document.addEventListener('selectionchange', function() {
+  updateCount();
+  captureSelection();
+  updateSelectButtons();
+  positionSelectToolbar();
+});
 
-function onSelect() { updateCount(); }
+function onSelect() {
+  updateCount();
+  captureSelection();
+  updateSelectButtons();
+  positionSelectToolbar();
+}
+
+// Selection tool - extend the current selection by N words/letters/whole verses,
+// either backward (toward earlier ayat) or forward (toward later ayat).
+// Same logic powers both the sidebar panel and the floating toolbar, which read
+// from their own count input / radio group (ids passed in, default to the sidebar's).
+//
+// Focusing the count input or a unit radio collapses window.getSelection() (the
+// browser drops the page's text selection as soon as a form control takes focus),
+// so the live Selection can't be trusted at click time. We keep our own copy
+// (savedSelectionRange) updated only when there IS a real, non-collapsed selection
+// in the Quran text, and we hold onto it through collapses caused by focusing our
+// own controls (isOwnControlFocused) so the extend buttons keep working.
+var savedSelectionRange = null;
+
+function isOwnControlFocused() {
+  var el = document.activeElement;
+  return !!(el && (el.closest('#select-toolbar') || el.closest('#select-row')));
+}
+
+function captureSelection() {
+  var sel = window.getSelection();
+  if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+    var range = sel.getRangeAt(0);
+    if (document.getElementById('quran-content').contains(range.commonAncestorContainer)) {
+      savedSelectionRange = range.cloneRange();
+      return;
+    }
+  }
+  if (!isOwnControlFocused()) savedSelectionRange = null;
+}
+
+function updateSelectButtons() {
+  var hasSelection = !!savedSelectionRange;
+  document.getElementById('select-before-btn').disabled = !hasSelection;
+  document.getElementById('select-after-btn').disabled = !hasSelection;
+}
+
+function positionSelectToolbar() {
+  var toolbar = document.getElementById('select-toolbar');
+  var range = savedSelectionRange;
+  if (!range) {
+    toolbar.style.display = 'none';
+    return;
+  }
+  var rect = range.getBoundingClientRect();
+  if (rect.width === 0 && rect.height === 0) {
+    toolbar.style.display = 'none';
+    return;
+  }
+  toolbar.style.display = 'flex';
+  var top = rect.top - toolbar.offsetHeight - 8;
+  if (top < 8) top = rect.bottom + 8;
+  var left = rect.left + rect.width / 2 - toolbar.offsetWidth / 2;
+  left = Math.max(8, Math.min(left, window.innerWidth - toolbar.offsetWidth - 8));
+  toolbar.style.top = top + 'px';
+  toolbar.style.left = left + 'px';
+}
+
+window.addEventListener('scroll', positionSelectToolbar, {passive: true});
+window.addEventListener('resize', positionSelectToolbar);
+
+function adjustSelectCount(inputId, delta) {
+  var input = document.getElementById(inputId);
+  var val = parseInt(input.value, 10);
+  if (isNaN(val)) val = 1;
+  input.value = Math.max(1, val + delta);
+}
+
+function getAyaList() {
+  return Array.prototype.slice.call(document.querySelectorAll('#quran-content .aya'));
+}
+
+// A "letter" excludes digits, the verse-number brackets ﴿﴾, the tatweel ـ and
+// whitespace - same definition used by the كلمات/حروف badges in updateCount().
+function isLetterChar(ch) {
+  return !/[0-9﴿﴾ـ\s]/.test(ch);
+}
+
+// True when `offset` falls strictly inside a run of non-whitespace characters
+// (i.e. the selection boundary cuts through the middle of a word).
+function isMidWord(text, offset) {
+  return offset > 0 && offset < text.length && !/\s/.test(text[offset - 1]) && !/\s/.test(text[offset]);
+}
+
+// Counting always starts from a whole word: if the boundary cuts through one,
+// the rest of that word is completed for free (not counted against N) before
+// counting outward - for both كلمات and حروف, per the user's requested behavior.
+function snapToWordStart(text, offset) {
+  while (offset > 0 && !/\s/.test(text[offset - 1])) offset--;
+  return offset;
+}
+function snapToWordEnd(text, offset) {
+  while (offset < text.length && !/\s/.test(text[offset])) offset++;
+  return offset;
+}
+
+function consumeForward(text, offset, unit, remaining) {
+  if (unit === 'letters') {
+    while (offset < text.length && remaining > 0) {
+      if (isLetterChar(text[offset])) remaining--;
+      offset++;
+    }
+    return { offset: offset, remaining: remaining };
+  }
+  while (remaining > 0 && offset < text.length) {
+    while (offset < text.length && /\s/.test(text[offset])) offset++;
+    if (offset >= text.length) break;
+    while (offset < text.length && !/\s/.test(text[offset])) offset++;
+    remaining--;
+  }
+  return { offset: offset, remaining: remaining };
+}
+
+function consumeBackward(text, offset, unit, remaining) {
+  if (unit === 'letters') {
+    while (offset > 0 && remaining > 0) {
+      offset--;
+      if (isLetterChar(text[offset])) remaining--;
+    }
+    return { offset: offset, remaining: remaining };
+  }
+  while (remaining > 0 && offset > 0) {
+    while (offset > 0 && /\s/.test(text[offset - 1])) offset--;
+    if (offset <= 0) break;
+    while (offset > 0 && !/\s/.test(text[offset - 1])) offset--;
+    remaining--;
+  }
+  return { offset: offset, remaining: remaining };
+}
+
+// Walks `count` units (words/letters/whole verses) away from (ayaIndex, charOffset)
+// in direction dir (+1 = toward later ayat, -1 = toward earlier ayat), crossing
+// verse boundaries as needed. Each verse boundary is treated as a word/letter break,
+// matching how buildVerseChunks() originally split the raw text on "﴿N﴾ ".
+function advanceSelection(ayas, ayaIndex, charOffset, dir, unit, count) {
+  if (unit === 'ayat') {
+    var targetIndex = Math.max(0, Math.min(ayas.length - 1, ayaIndex + dir * count));
+    var targetOffset = dir === 1 ? ayas[targetIndex].textContent.length : 0;
+    return { ayaIndex: targetIndex, charOffset: targetOffset };
+  }
+  var remaining = count, curIndex = ayaIndex, curOffset = charOffset;
+  while (remaining > 0 && curIndex >= 0 && curIndex < ayas.length) {
+    var text = ayas[curIndex].textContent;
+    var result = dir === 1
+      ? consumeForward(text, curOffset, unit, remaining)
+      : consumeBackward(text, curOffset, unit, remaining);
+    remaining = result.remaining;
+    curOffset = result.offset;
+    if (remaining > 0) {
+      curIndex += dir;
+      if (curIndex >= 0 && curIndex < ayas.length) {
+        curOffset = dir === 1 ? 0 : ayas[curIndex].textContent.length;
+      }
+    }
+  }
+  if (curIndex < 0) {
+    curIndex = 0; curOffset = 0;
+  } else if (curIndex >= ayas.length) {
+    curIndex = ayas.length - 1; curOffset = ayas[curIndex].textContent.length;
+  }
+  return { ayaIndex: curIndex, charOffset: curOffset };
+}
+
+// Maps a DOM (node, offset) boundary inside `el` to a character offset within
+// el.textContent (inverse of resolveOffsetInElement).
+function charOffsetInElement(el, node, nodeOffset) {
+  if (node.nodeType !== 3) return nodeOffset === 0 ? 0 : el.textContent.length;
+  var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+  var total = 0, n;
+  while ((n = walker.nextNode())) {
+    if (n === node) return total + nodeOffset;
+    total += n.data.length;
+  }
+  return el.textContent.length;
+}
+
+// Maps a character offset within el.textContent back to a concrete (node, offset)
+// pair, accounting for el possibly containing multiple text nodes (e.g. <mark> highlights).
+function resolveOffsetInElement(el, charOffset) {
+  var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+  var remaining = charOffset, node, last = null;
+  while ((node = walker.nextNode())) {
+    last = node;
+    if (remaining <= node.data.length) return { node: node, offset: remaining };
+    remaining -= node.data.length;
+  }
+  return last ? { node: last, offset: last.data.length } : null;
+}
+
+// Counts how many of `unit` are currently selected - words/letters use the
+// exact same text normalization as the كلمات/حروف badges (updateCount), so the
+// number always matches what's on screen; ayat counts whole verses touched.
+function countSelectionUnits(range, unit, ayas) {
+  if (unit === 'ayat') {
+    var startEl = (range.startContainer.nodeType === 1 ? range.startContainer : range.startContainer.parentElement).closest('.aya');
+    var endEl = (range.endContainer.nodeType === 1 ? range.endContainer : range.endContainer.parentElement).closest('.aya');
+    var s = ayas.indexOf(startEl), e = ayas.indexOf(endEl);
+    if (s < 0 || e < 0) return 0;
+    return e - s + 1;
+  }
+  var frag = range.cloneContents();
+  frag.querySelectorAll('.surah-header').forEach(function(el) { el.remove(); });
+  var text = frag.textContent.replace(/([﴾])([^ ])/g, '$1 $2').trim();
+  if (!text) return 0;
+  if (unit === 'words') return text.split(/\s+/).filter(function(w) { return w.length > 0; }).length;
+  return text.replace(/[0-9﴿﴾ـ\s]/g, '').length;
+}
+
+function boundaryPos(ayas, node, offset) {
+  var ayaEl = (node.nodeType === 1 ? node : node.parentElement).closest('.aya');
+  if (!ayaEl) return null;
+  return { ayaIndex: ayas.indexOf(ayaEl), charOffset: charOffsetInElement(ayaEl, node, offset) };
+}
+
+function comparePos(a, b) {
+  return a.ayaIndex !== b.ayaIndex ? a.ayaIndex - b.ayaIndex : a.charOffset - b.charOffset;
+}
+
+// The count field is the TOTAL number of units the selection should end up
+// with (not "N more"), so the already-selected word(s) count toward it. We
+// grow or shrink the boundary the clicked button controls (end for "after",
+// start for "before") by exactly the difference, and clamp shrinking so it
+// never crosses the other, fixed boundary.
+function extendSelection(direction, countInputId, unitGroupName) {
+  var range = savedSelectionRange;
+  if (!range) return;
+
+  var target = parseInt(document.getElementById(countInputId || 'select-count').value, 10);
+  if (!target || target < 1) target = 1;
+  var unit = document.querySelector('input[name="' + (unitGroupName || 'select-unit') + '"]:checked').value;
+
+  var ayas = getAyaList();
+  var startPos = boundaryPos(ayas, range.startContainer, range.startOffset);
+  var endPos = boundaryPos(ayas, range.endContainer, range.endOffset);
+  if (!startPos || !endPos) return;
+
+  var delta = target - countSelectionUnits(range, unit, ayas);
+  if (delta === 0) {
+    // Already at the target count - nothing to move, but the live selection
+    // may have been collapsed by focusing the count input/radios, so restore
+    // it from savedSelectionRange to keep the highlight visible.
+    var sel0 = window.getSelection();
+    sel0.removeAllRanges();
+    sel0.addRange(range.cloneRange());
+    return;
+  }
+
+  var movingStart = direction === 'before';
+  var movingPos = movingStart ? startPos : endPos;
+  var fixedPos = movingStart ? endPos : startPos;
+  var buttonDir = movingStart ? -1 : 1;
+  var dir = delta > 0 ? buttonDir : -buttonDir;
+
+  var ayaIndex = movingPos.ayaIndex, charOffset = movingPos.charOffset;
+
+  // Growing by whole words: complete a partially-selected boundary word for
+  // free first - it's already counted as 1 word by countSelectionUnits, so
+  // completing it doesn't change the tally, only the precise unit count below
+  // does. (Not needed for letters - each letter is counted individually with
+  // no such "fragment" ambiguity - nor for ayat, which is already verse-snapped.)
+  if (delta > 0 && unit === 'words') {
+    var boundaryText = ayas[ayaIndex].textContent;
+    if (isMidWord(boundaryText, charOffset)) {
+      charOffset = dir === 1 ? snapToWordEnd(boundaryText, charOffset) : snapToWordStart(boundaryText, charOffset);
+    }
+  }
+
+  var newPos = advanceSelection(ayas, ayaIndex, charOffset, dir, unit, Math.abs(delta));
+
+  // Shrinking by whole words: consumeForward/Backward's stop point sits on the
+  // far (removed) side of the word-separating space, so the kept boundary
+  // picks up a stray leading/trailing space - trim it back onto the removed side.
+  if (delta < 0 && unit === 'words') {
+    var trimText = ayas[newPos.ayaIndex].textContent;
+    if (movingStart) {
+      while (newPos.charOffset < trimText.length && /\s/.test(trimText[newPos.charOffset])) newPos.charOffset++;
+    } else {
+      while (newPos.charOffset > 0 && /\s/.test(trimText[newPos.charOffset - 1])) newPos.charOffset--;
+    }
+  }
+
+  if (delta < 0) {
+    var crossed = movingStart ? comparePos(newPos, fixedPos) > 0 : comparePos(newPos, fixedPos) < 0;
+    if (crossed) newPos = fixedPos;
+  }
+
+  var pos = resolveOffsetInElement(ayas[newPos.ayaIndex], newPos.charOffset);
+  if (!pos) return;
+
+  var newRange = range.cloneRange();
+  if (movingStart) newRange.setStart(pos.node, pos.offset);
+  else newRange.setEnd(pos.node, pos.offset);
+
+  savedSelectionRange = newRange.cloneRange();
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(newRange);
+  updateCount();
+  updateSelectButtons();
+  positionSelectToolbar();
+  ayas[newPos.ayaIndex].scrollIntoView({behavior: 'smooth', block: 'center'});
+}
 
 // Search with highlight
 var searchTimeout = null;
